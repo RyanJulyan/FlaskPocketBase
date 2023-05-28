@@ -1,8 +1,8 @@
-from typing import Dict, Any, List
+from typing import Callable, Dict, Any, List
 import json
 
-from app.brokers.storeage.i_storage_broker import IStorageBroker
-from app.brokers.storeage.file.json_storage_broker import JsonStorageBroker
+from app.brokers.storage.i_storage_broker import IStorageBroker
+from app.brokers.storage.file.json_storage_broker import JsonStorageBroker
 from app.extensions.sql_alch_model_extension import Extension
 
 
@@ -19,9 +19,9 @@ def get_enabled_extensions_sql_alch() -> List[str]:
 
 def get_enabled_extensions(method_name: str = "sql_alch",
                            **kwargs: Any) -> List[str]:
-  methods: Dict[str, callable] = {
+  methods: Dict[str, Callable[..., Any]] = {
     "sql_alch": get_enabled_extensions_sql_alch,
     "json": get_enabled_extensions_json,
   }
 
-  methods[method_name](**kwargs)
+  return methods[method_name](**kwargs)

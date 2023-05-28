@@ -1,23 +1,23 @@
 import os
 import importlib
+from typing import Any, List
 
 from app.extensions.get_enabled_extensions import get_enabled_extensions
 
 DEFAULT_EXTENSIONS_DIRECTORY = 'app/extensions/'
 
 
-def list_folders(directory):
+def list_folders(directory: str) -> List[str]:
   return [
     d for d in os.listdir(directory)
     if os.path.isdir(os.path.join(directory, d))
   ]
 
 
-def register_extensions(
-    app, extensions_directory: str = DEFAULT_EXTENSIONS_DIRECTORY):
+def register_extensions(app: Any, extensions_directory: str = DEFAULT_EXTENSIONS_DIRECTORY,) -> None:
 
   @app.before_request
-  def before_request():
+  def before_request() -> None:
     enabled_extensions = get_enabled_extensions(
     )  # Get the list of enabled extensions from your database or config file
 
