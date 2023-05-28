@@ -1,0 +1,3 @@
+-r common.txt
+black
+mypy
