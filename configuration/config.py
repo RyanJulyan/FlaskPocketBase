@@ -1,4 +1,5 @@
 import sys, os
+from typing import Dict, Union
 
 from configuration.database_config import (
   DEFAULT_DATABASE_URI,
@@ -99,18 +100,41 @@ class Config(object):
   AUTO_CREATE_TABLES_FROM_MODELS = env("AUTO_CREATE_TABLES_FROM_MODELS", True)
 
   DATABASE_URI = DEFAULT_DATABASE_URI
+
+  SQLALCHEMY_BINDS = {
+     "default": DATABASE_URI
+  }
   
 
 
 class ProductionConfig(Config):
   DATABASE_URI = PROD_DATABASE_URI
 
+  SQLALCHEMY_BINDS = {
+     "default": DATABASE_URI
+  }
+
 
 class DevelopmentConfig(Config):
   DEBUG = True
   DATABASE_URI = DEV_DATABASE_URI
 
+  SQLALCHEMY_BINDS = {
+     "default": DATABASE_URI
+  }
+
 
 class TestingConfig(Config):
   TESTING = True
   DATABASE_URI = TEST_DATABASE_URI
+
+  SQLALCHEMY_BINDS = {
+     "default": DATABASE_URI
+  }
+
+default_config_factory: Dict[str, Union[Config, ProductionConfig, DevelopmentConfig, TestingConfig]] = {
+  "default": Config,
+  "production": ProductionConfig,
+  "development": DevelopmentConfig,
+  "testing": TestingConfig,
+}
