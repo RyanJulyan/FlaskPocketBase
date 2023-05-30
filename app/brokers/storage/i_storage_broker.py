@@ -3,21 +3,22 @@ A base class for interfacing with data storage formats (e.g json, sql,
  excel or csv).
 """
 from abc import ABC, abstractmethod
+from typing import Any
+
 
 class IStorageBroker(ABC):
+    @abstractmethod
+    def create(self, *args: Any, **kwargs: Any) -> Any:
+        pass
 
-  @abstractmethod
-  def create():
-    pass
+    @abstractmethod
+    def read(self, *args: Any, **kwargs: Any) -> Any:
+        pass
 
-  @abstractmethod
-  def read():
-    pass
+    @abstractmethod
+    def update(self, *args: Any, **kwargs: Any) -> Any:
+        pass
 
-  @abstractmethod
-  def update():
-    pass
-
-  @abstractmethod
-  def delete():
-    pass
+    @abstractmethod
+    def delete(self, *args: Any, **kwargs: Any) -> Any:
+        pass
