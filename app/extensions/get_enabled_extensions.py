@@ -3,7 +3,8 @@ import json
 
 from app.brokers.storage.i_storage_broker import IStorageBroker
 from app.brokers.storage.file.json_storage_broker import JsonStorageBroker
-from app.extensions.sql_alch_model_extension import Extension
+
+# from app.extensions.sql_alch_model_extension import Extension
 
 
 def get_enabled_extensions_json(
@@ -14,16 +15,16 @@ def get_enabled_extensions_json(
     return enabled_extensions
 
 
-def get_enabled_extensions_sql_alch() -> List[str]:
-    enabled_extensions = Extension.query.filter_by(enabled=True).all()
-    return [extension.name for extension in enabled_extensions]
+# def get_enabled_extensions_sql_alch() -> List[str]:
+#     enabled_extensions = Extension.query.filter_by(enabled=True).all()
+#     return [extension.name for extension in enabled_extensions]
 
 
 def get_enabled_extensions(
-    method_name: str = "sql_alch", **kwargs: Any
+    method_name: str = "json", **kwargs: Any
 ) -> List[str]:
     methods: Dict[str, Callable[..., Any]] = {
-        "sql_alch": get_enabled_extensions_sql_alch,
+        # "sql_alch": get_enabled_extensions_sql_alch,
         "json": get_enabled_extensions_json,
     }
 
