@@ -1,3 +1,6 @@
 Flask
-Flask-SQLAlchemy
+flask-admin
+flask-security
+flask-sqlalchemy
 python-dotenv
+sqlalchemy
