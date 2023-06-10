@@ -1,7 +1,6 @@
 import os
 from typing import Any, Dict
 
-from flask import g, request
 from app.core.before_request.before_request import before_request
 from app.core.context_processor.context_processor import context_processor
 from app.core.health_check.view import health_check
