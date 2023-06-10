@@ -3,9 +3,9 @@ from typing import Any
 from flask import g, jsonify
 
 
-def health_check(app: Any):
+def health_check(app: Any) -> None:
     @app.route("/health_check")
-    def health_check():
+    def health_check() -> None:
         return jsonify(
             {
                 "status": 200,
