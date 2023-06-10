@@ -3,9 +3,9 @@ from typing import Any
 from flask import g
 
 
-def context_processor(app: Any):
+def context_processor(app: Any) -> None:
     @app.context_processor
-    def get_additional_data_context_in_template():
+    def context_processor() -> None:
         return {
             "organization": g.organization,
         }

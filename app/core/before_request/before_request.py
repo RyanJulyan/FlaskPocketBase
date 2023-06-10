@@ -3,9 +3,9 @@ from typing import Any
 from flask import g, request
 
 
-def before_request(app: Any):
+def before_request(app: Any) -> None:
     @app.before_request
-    def before_request():
+    def before_request() -> None:
         # organization = tenant_name
         # Just use the query parameter "?organization=tenant_name"
         # or a subdomain tenant_name.example.com
