@@ -1,5 +1,7 @@
 import sys, os
-from typing import Dict, Union
+from typing import Any, Dict, Union
+
+from dotenv import dotenv_values
 
 from configuration.database_config import (
     DEFAULT_DATABASE_URI,
@@ -22,6 +24,16 @@ else:
 
 
 class Config(object):
+    def __init__(self, **kwargs: Any) -> None:
+        config = {
+            **dotenv_values(
+                ".env.shared",
+            ),  # load shared environment variables
+            **kwargs,  # load passed in variables
+            **os.environ,  # override loaded values with environment variables
+        }
+        self.__dict__.update(config)
+
     BASE_DIR = BASE_DIR
 
     ###########################
@@ -103,36 +115,69 @@ class Config(object):
         "AUTO_CREATE_TABLES_FROM_MODELS", True
     )
 
-    DATABASE_URI = DEFAULT_DATABASE_URI
+    DATABASE_URI = env("DATABASE_URI", DEFAULT_DATABASE_URI)
 
     SQLALCHEMY_BINDS = {"default": DATABASE_URI}
 
 
 class ProductionConfig(Config):
-    DATABASE_URI = PROD_DATABASE_URI
+    def __init__(self, **kwargs: Any) -> None:
+        config = {
+            **dotenv_values(
+                ".env.production",
+            ),  # load production environment variables
+            **kwargs,  # load passed in variables
+            **os.environ,  # override loaded values with environment variables
+        }
+        super(Config, self).__init__(**config)
+        self.__dict__.update(config)
+
+    DATABASE_URI = env("DATABASE_URI", PROD_DATABASE_URI)
 
     SQLALCHEMY_BINDS = {"default": DATABASE_URI}
 
 
 class DevelopmentConfig(Config):
+    def __init__(self, **kwargs: Any) -> None:
+        config = {
+            **dotenv_values(
+                ".env.development",
+            ),  # load development environment variables
+            **kwargs,  # load passed in variables
+            **os.environ,  # override loaded values with environment variables
+        }
+        super(Config, self).__init__(**config)
+        self.__dict__.update(config)
+
     DEBUG = True
-    DATABASE_URI = DEV_DATABASE_URI
+    DATABASE_URI = env("DATABASE_URI", DEV_DATABASE_URI)
 
     SQLALCHEMY_BINDS = {"default": DATABASE_URI}
 
 
-class TestingConfig(Config):
+class TestConfig(Config):
+    def __init__(self, **kwargs: Any) -> None:
+        config = {
+            **dotenv_values(
+                ".env.test",
+            ),  # load test environment variables
+            **kwargs,  # load passed in variables
+            **os.environ,  # override loaded values with environment variables
+        }
+        super(Config, self).__init__(**config)
+        self.__dict__.update(config)
+
     TESTING = True
-    DATABASE_URI = TEST_DATABASE_URI
+    DATABASE_URI = env("DATABASE_URI", TEST_DATABASE_URI)
 
     SQLALCHEMY_BINDS = {"default": DATABASE_URI}
 
 
 default_config_factory: Dict[
-    str, Union[Config, ProductionConfig, DevelopmentConfig, TestingConfig]
+    str, Union[Config, ProductionConfig, DevelopmentConfig, TestConfig]
 ] = {
     "default": Config,
     "production": ProductionConfig,
     "development": DevelopmentConfig,
-    "testing": TestingConfig,
+    "testing": TestConfig,
 }
