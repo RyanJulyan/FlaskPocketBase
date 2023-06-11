@@ -1,7 +1,9 @@
 from typing import Any
 
-from flask import g, request, current_app as ca
+from flask import g, request
 from sqlalchemy_utils import database_exists, create_database
+
+from app.core.database.database import db
 
 
 def before_request(app: Any) -> None:
@@ -22,19 +24,19 @@ def before_request(app: Any) -> None:
             app.logger.info("Organisation changed: " + g.organization)
 
         # Set database to tenant_name
-        ca.db.choose_tenant(g.organization)
+        db.choose_tenant(g.organization)
 
         # Create database if it does not exist.
         if app.config["AUTO_CREATE_DATABASE"]:
-            if not database_exists(ca.db.get_engine().url):
-                create_database(ca.db.get_engine().url)
+            if not database_exists(db.get_engine().url):
+                create_database(db.get_engine().url)
             else:
                 # Connect the database if exists.
-                ca.db.get_engine().connect()
+                db.get_engine().connect()
 
         # Build the database:
         print(app.config["SQLALCHEMY_BINDS"])
         if app.config["AUTO_CREATE_TABLES_FROM_MODELS"]:
             # This will create the database tables using SQLAlchemy
             with app.app_context():
-                ca.db.create_all()
+                db.create_all()
