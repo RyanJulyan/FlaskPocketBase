@@ -132,9 +132,11 @@ class Config(object):
         "AUTO_CREATE_TABLES_FROM_MODELS", True
     )
 
-    DATABASE_URI = env("DATABASE_URI", DEFAULT_DATABASE_URI)
+    SQLALCHEMY_DATABASE_URI = env(
+        "SQLALCHEMY_DATABASE_URI", DEFAULT_DATABASE_URI
+    )
 
-    SQLALCHEMY_BINDS = {"default": DATABASE_URI}
+    SQLALCHEMY_BINDS = {"default": SQLALCHEMY_DATABASE_URI}
 
     SQLALCHEMY_TRACK_MODIFICATIONS = env(
         "SQLALCHEMY_TRACK_MODIFICATIONS", False
@@ -263,9 +265,11 @@ class DevelopmentConfig(Config):
         self.__dict__.update(config)
 
     DEBUG = True
-    DATABASE_URI = env("DATABASE_URI", DEV_DATABASE_URI)
+    SQLALCHEMY_DATABASE_URI = env(
+        "SQLALCHEMY_DATABASE_URI", DEFAULT_DATABASE_URI
+    )
 
-    SQLALCHEMY_BINDS = {"default": DATABASE_URI}
+    SQLALCHEMY_BINDS = {"default": SQLALCHEMY_DATABASE_URI}
 
 
 class TestConfig(Config):
@@ -281,9 +285,11 @@ class TestConfig(Config):
         self.__dict__.update(config)
 
     TESTING = True
-    DATABASE_URI = env("DATABASE_URI", TEST_DATABASE_URI)
+    SQLALCHEMY_DATABASE_URI = env(
+        "SQLALCHEMY_DATABASE_URI", DEFAULT_DATABASE_URI
+    )
 
-    SQLALCHEMY_BINDS = {"default": DATABASE_URI}
+    SQLALCHEMY_BINDS = {"default": SQLALCHEMY_DATABASE_URI}
 
 
 class ProductionConfig(Config):
@@ -298,9 +304,11 @@ class ProductionConfig(Config):
         super(Config, self).__init__(**config)
         self.__dict__.update(config)
 
-    DATABASE_URI = env("DATABASE_URI", PROD_DATABASE_URI)
+    SQLALCHEMY_DATABASE_URI = env(
+        "SQLALCHEMY_DATABASE_URI", DEFAULT_DATABASE_URI
+    )
 
-    SQLALCHEMY_BINDS = {"default": DATABASE_URI}
+    SQLALCHEMY_BINDS = {"default": SQLALCHEMY_DATABASE_URI}
 
 
 default_config_factory: Dict[
