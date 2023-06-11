@@ -1,8 +1,10 @@
+email_validator
 Flask
 flask-admin
 flask-cors
-flask-security
+flask-security-too
 flask-sqlalchemy
 python-dotenv
+pytz
 sqlalchemy
 sqlalchemy-utils
