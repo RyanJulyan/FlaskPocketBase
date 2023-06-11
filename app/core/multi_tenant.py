@@ -11,9 +11,9 @@ class MultiTenantSQLAlchemy(SQLAlchemy):
             )
         g.tenant = bind_key
 
-    def get_engine(self, app: Any = None, bind: str = None):
-        if bind is None:
+    def get_engine(self, bind_key: str = None):
+        if bind_key is None:
             if not hasattr(g, "tenant"):
                 raise RuntimeError("No tenant chosen.")
-            bind = g.tenant
-        return super().get_engine(app=app, bind=bind)
+            bind_key = g.tenant
+        return super().get_engine(bind_key=bind_key)
