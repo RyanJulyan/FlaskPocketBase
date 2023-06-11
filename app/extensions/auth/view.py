@@ -1,6 +1,6 @@
-from flask import current_app
+from flask import current_app as ca
 
 
 def auth_extension() -> None:
-    admin = current_app.admin
+    admin = ca.admin
     # Now you can use the admin instance...
