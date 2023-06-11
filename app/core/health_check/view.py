@@ -3,7 +3,7 @@ from typing import Any
 from flask import g, jsonify
 
 
-def health_check(app: Any) -> None:
+def health_check(app: Any, **kwargs: Any) -> None:
     @app.route("/health_check")
     def health_check() -> None:
         return jsonify(
@@ -13,5 +13,6 @@ def health_check(app: Any) -> None:
                 "organization": g.organization,
                 "site_title": app.config["SITE_TITLE"],
                 "site_url": app.config["SITE_URL"],
+                **kwargs,
             }
         )
