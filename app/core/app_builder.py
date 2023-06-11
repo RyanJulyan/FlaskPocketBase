@@ -3,6 +3,7 @@ from typing import Any, Dict
 
 from app.core.before_request.before_request import before_request
 from app.core.context_processor.context_processor import context_processor
+from app.core.flask_admin.init_flask_admin import init_flask_admin
 from app.core.health_check.view import health_check
 
 from configuration.config import Config, default_config_factory
@@ -32,6 +33,8 @@ def build_app(
     context_processor(app)
 
     health_check(app)
+
+    app.admin = init_flask_admin(app)
 
     register_extensions(app=app, extensions_directory=extensions_directory)
 
