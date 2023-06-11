@@ -32,7 +32,7 @@ def register_plugins(
                 # The plugin is enabled and not currently registered, so register it
                 try:
                     blueprint = importlib.import_module(
-                        f".plugins.{plugin}.views", "app"
+                        f".plugins.{plugin}.view", "app"
                     ).blueprint
                     app.register_blueprint(blueprint)
                 except Exception as e:

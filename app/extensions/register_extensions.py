@@ -35,7 +35,7 @@ def register_extensions(
                 # The extension is enabled and not currently registered, so register it
                 try:
                     blueprint = importlib.import_module(
-                        f".extensions.{extension}.views", "app"
+                        f".extensions.{extension}.view", "app"
                     ).blueprint
                     app.register_blueprint(blueprint)
                 except Exception as e:
