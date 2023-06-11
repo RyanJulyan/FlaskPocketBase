@@ -1,6 +1,8 @@
 Flask
 flask-admin
+flask-cors
 flask-security
 flask-sqlalchemy
 python-dotenv
 sqlalchemy
+sqlalchemy-utils
