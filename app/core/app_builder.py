@@ -7,8 +7,9 @@ from configuration.config import Config, default_config_factory
 
 from app.core.before_request.before_request import before_request
 from app.core.context_processor.context_processor import context_processor
-from app.core.flask_admin.init_flask_admin import init_flask_admin
 from app.core.health_check.view import health_check
+from app.core.errorhandler.errorhandler import errorhandler
+from app.core.flask_admin.init_flask_admin import init_flask_admin
 from app.core.multi_tenant import MultiTenantSQLAlchemy
 from app.core.app_factory import create_app
 from app.extensions.register_extensions import (
@@ -41,6 +42,8 @@ def build_app(
     context_processor(app)
 
     health_check(app)
+
+    errorhandler(app)
 
     app.admin = init_flask_admin(app)
 
