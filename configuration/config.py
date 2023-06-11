@@ -5,9 +5,9 @@ from dotenv import dotenv_values
 
 from configuration.database_config import (
     DEFAULT_DATABASE_URI,
-    PROD_DATABASE_URI,
     DEV_DATABASE_URI,
     TEST_DATABASE_URI,
+    PROD_DATABASE_URI,
 )
 
 #############################
@@ -265,9 +265,7 @@ class DevelopmentConfig(Config):
         self.__dict__.update(config)
 
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = env(
-        "SQLALCHEMY_DATABASE_URI", DEFAULT_DATABASE_URI
-    )
+    SQLALCHEMY_DATABASE_URI = env("SQLALCHEMY_DATABASE_URI", DEV_DATABASE_URI)
 
     SQLALCHEMY_BINDS = {"default": SQLALCHEMY_DATABASE_URI}
 
@@ -285,9 +283,7 @@ class TestConfig(Config):
         self.__dict__.update(config)
 
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = env(
-        "SQLALCHEMY_DATABASE_URI", DEFAULT_DATABASE_URI
-    )
+    SQLALCHEMY_DATABASE_URI = env("SQLALCHEMY_DATABASE_URI", TEST_DATABASE_URI)
 
     SQLALCHEMY_BINDS = {"default": SQLALCHEMY_DATABASE_URI}
 
@@ -304,9 +300,7 @@ class ProductionConfig(Config):
         super(Config, self).__init__(**config)
         self.__dict__.update(config)
 
-    SQLALCHEMY_DATABASE_URI = env(
-        "SQLALCHEMY_DATABASE_URI", DEFAULT_DATABASE_URI
-    )
+    SQLALCHEMY_DATABASE_URI = env("SQLALCHEMY_DATABASE_URI", PROD_DATABASE_URI)
 
     SQLALCHEMY_BINDS = {"default": SQLALCHEMY_DATABASE_URI}
 
@@ -317,5 +311,5 @@ default_config_factory: Dict[
     "default": Config,
     "production": ProductionConfig,
     "development": DevelopmentConfig,
-    "testing": TestConfig,
+    "test": TestConfig,
 }
