@@ -35,7 +35,6 @@ def before_request(app: Any) -> None:
                 db.get_engine().connect()
 
         # Build the database:
-        print(app.config["SQLALCHEMY_BINDS"])
         if app.config["AUTO_CREATE_TABLES_FROM_MODELS"]:
             # This will create the database tables using SQLAlchemy
             with app.app_context():
