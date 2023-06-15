@@ -33,7 +33,7 @@ def build_app(
     config_factory: Dict[str, Config] = {},
     extensions_directory: str = DEFAULT_EXTENSIONS_DIRECTORY,
     plugins_directory: str = DEFAULT_PLUGINS_DIRECTORY,
-    template_folder="templates",
+    template_folder: str = "templates",
     health_check_kwargs: Any = {},
 ) -> Any:
     config_factory = {**default_config_factory, **config_factory}
