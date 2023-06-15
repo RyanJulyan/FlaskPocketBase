@@ -14,7 +14,7 @@ class BaseModelView(ModelView):
     column_display_pk = False  # display primary keys
     page_size = 500  # number of entries to display on list view
 
-    def is_accessible(self):
+    def is_accessible(self) -> bool:
         # Only allow access to admins and managers
         return any(
             [
@@ -32,18 +32,23 @@ class BaseModelView(ModelView):
         if name not in ["create", "edit", "delete"]:
             return super(BaseModelView, self).is_action_allowed(name)
 
-        class_with_action_name: bool = current_user.has_role(
-            f"{self.__class__.__name__}_{name}"
+        has_class_as_role: bool = current_user.has_role(
+            self.__class__.__name__
         )
+        has_action_as_permission: bool = current_user.has_permission(name)
+
+        current_user.can(name)
 
         valid_check = any(
             [
                 current_user.has_role("admin"),
-                class_with_action_name,
+                all(
+                    [
+                        has_class_as_role,
+                        has_action_as_permission,
+                    ]
+                ),
             ]
         )
 
         return valid_check
-
-
-all([True])
