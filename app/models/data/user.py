@@ -1,16 +1,17 @@
 from flask_security import UserMixin
 
 from app.core.database.database import db
+from app.models.data.base_model import BaseModel
 
 
-class RolesUsers(db.Model):
+class RolesUsers(BaseModel):
     __tablename__ = "roles_users"
     id = db.Column(db.Integer(), primary_key=True)
     user_id = db.Column("user_id", db.Integer(), db.ForeignKey("user.id"))
     role_id = db.Column("role_id", db.Integer(), db.ForeignKey("role.id"))
 
 
-class User(UserMixin, db.Model):
+class User(UserMixin, BaseModel):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True)
