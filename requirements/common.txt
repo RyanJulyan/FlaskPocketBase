@@ -8,3 +8,4 @@ python-dotenv
 pytz
 sqlalchemy
 sqlalchemy-utils
+zxcvbn
