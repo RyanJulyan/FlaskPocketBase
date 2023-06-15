@@ -1,8 +1,9 @@
-from dataclasses import dataclass
-import pprint
 import sys, os
+from dataclasses import dataclass
+import secrets
 from typing import Any, Dict, Union
 
+import pprint
 from dotenv import dotenv_values
 
 from configuration.database_config import (
@@ -46,32 +47,6 @@ class Config(object):
     DEBUG_TB_PROFILER_ENABLED = env("DEBUG_TB_PROFILER_ENABLED", False)
     DEBUG_TB_INTERCEPT_REDIRECTS = env("DEBUG_TB_INTERCEPT_REDIRECTS", False)
     TESTING = env("TESTING", False)
-
-    ##########################
-    # Basic Site Information #
-    ##########################
-    SITE_TITLE = env("SITE_TITLE", "FlaskPocketBase")
-    SITE_URL = env("SITE_URL", "http://www.FlaskPocketBase.com")
-    SITE_DESCRIPTION = env(
-        "SITE_DESCRIPTION", "My awesome new FlaskPocketBase site."
-    )
-    SITE_THEME_COLOR = env("SITE_THEME_COLOR", "#3367D6")
-    DEVELOPER_NAME = env("DEVELOPER_NAME", "FlaskPocketBase")
-
-    ####################################
-    # Search Engine Optimization (SEO) #
-    ####################################
-    SEO_SUBJECT = env("SEO_SUBJECT", "Rapid Application Development.")
-    SEO_SUBTITLE = env("SEO_SUBTITLE", "Flask BDA Site.")
-    SEO_SUMMARY = env("SEO_SUMMARY", "This site was created using Flask BDA.")
-    SEO_ABSTRACT = env(
-        "SEO_ABSTRACT", "This site was created using FlaskPocketBase."
-    )
-    SEO_KEYWORDS = env(
-        "SEO_KEYWORDS",
-        "Flask, PWA, Python, Rapid Application Development, RAD, Progressive Web App, Flask BDA.",
-    )
-    SEO_REVISIT_AFTER = env("SEO_REVISIT_AFTER", "7 days")
 
     ###################
     # List Formatting #
@@ -159,18 +134,26 @@ class Config(object):
     # Enable protection agains *Cross-site Request Forgery (CSRF)* #
     ################################################################
     CSRF_ENABLED = env("CSRF_ENABLED", True)
-    CSRF_SESSION_KEY = env("CSRF_SESSION_KEY", "secret")
+    CSRF_SESSION_KEY = env("CSRF_SESSION_KEY", secrets.token_urlsafe(256))
 
-    #############################################
-    # Secret key for signing cookies and Tokens #
-    #############################################
-    SECRET_KEY = env("SECRET_KEY", "secret")
-    SECURITY_PASSWORD_SALT = env("SECURITY_PASSWORD_SALT", "secret")
+    #######################################################
+    # Secret key for security, signing cookies and Tokens #
+    #######################################################
+    SECRET_KEY = env("SECRET_KEY", secrets.token_urlsafe(256))
+    SECURITY_PASSWORD_LENGTH_MIN = env("SECURITY_PASSWORD_LENGTH_MIN", 12)
+    SECURITY_PASSWORD_SALT = env(
+        "SECURITY_PASSWORD_SALT", secrets.token_urlsafe(256)
+    )
+    SECURITY_PASSWORD_HASH = env("SECURITY_PASSWORD_HASH", "argon2")
+    SECURITY_REGISTERABLE = env("SECURITY_REGISTERABLE", True)
+    SECURITY_PASSWORD_COMPLEXITY_CHECKER = env(
+        "SECURITY_PASSWORD_COMPLEXITY_CHECKER", "zxcvbn"
+    )
 
     ################################################
     # Secret key for signing JWT (JSON Web Tokens) #
     ################################################
-    JWT_SECRET_KEY = env("JWT_SECRET_KEY", "secret")
+    JWT_SECRET_KEY = env("JWT_SECRET_KEY", secrets.token_urlsafe(256))
     JWT_ACCESS_TOKEN_EXPIRES = env("JWT_ACCESS_TOKEN_EXPIRES", 3600)
     JWT_BLACKLIST_ENABLED = env("JWT_BLACKLIST_ENABLED", True)
     JWT_BLACKLIST_TOKEN_CHECKS = env(
@@ -194,19 +177,6 @@ class Config(object):
     ]
 
     DEFAULT_LIMITS = env("DEFAULT_LIMITS", DEFAULT_LIMITS)
-
-    #####################
-    # Email Credentails #
-    #####################
-    MAIL_SERVER = env("MAIL_SERVER", "smtp.mailtrap.io")
-    MAIL_PORT = env("MAIL_PORT", 2525)
-    MAIL_USERNAME = env("MAIL_USERNAME", "email@example.com")
-    MAIL_PASSWORD = env("MAIL_PASSWORD", "example password")
-    MAIL_USE_TLS = env("MAIL_USE_TLS", True)
-    MAIL_USE_SSL = env("MAIL_USE_SSL", False)
-    DEFAULT_MAIL_SENDER = env(
-        "DEFAULT_MAIL_SENDER", "Flask BDA <me@example.com>"
-    )
 
     ###############
     # File Upload #
