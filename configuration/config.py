@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+import pprint
 import sys, os
 from typing import Any, Dict, Union
 
@@ -23,6 +25,7 @@ else:
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
+@dataclass
 class Config(object):
     def __init__(self, **kwargs: Any) -> None:
         config = {
@@ -252,52 +255,55 @@ class Config(object):
     )  # Our API url (can of course be a local resource)
 
 
+@dataclass
 class DevelopmentConfig(Config):
     def __init__(self, **kwargs: Any) -> None:
         config = {
             **dotenv_values(
-                ".env.development",
+                "configuration/.env.development",
             ),  # load development environment variables
             **kwargs,  # load passed in variables
             **os.environ,  # override loaded values with environment variables
         }
-        super(Config, self).__init__(**config)
+        super().__init__(**config)
         self.__dict__.update(config)
 
-    DEBUG = True
+    DEBUG = env("DEBUG", True)
     SQLALCHEMY_DATABASE_URI = env("SQLALCHEMY_DATABASE_URI", DEV_DATABASE_URI)
 
     SQLALCHEMY_BINDS = {"default": SQLALCHEMY_DATABASE_URI}
 
 
+@dataclass
 class TestConfig(Config):
     def __init__(self, **kwargs: Any) -> None:
         config = {
             **dotenv_values(
-                ".env.test",
+                "configuration/.env.test",
             ),  # load test environment variables
             **kwargs,  # load passed in variables
             **os.environ,  # override loaded values with environment variables
         }
-        super(Config, self).__init__(**config)
+        super().__init__(**config)
         self.__dict__.update(config)
 
-    TESTING = True
+    TESTING = env("TESTING", True)
     SQLALCHEMY_DATABASE_URI = env("SQLALCHEMY_DATABASE_URI", TEST_DATABASE_URI)
 
     SQLALCHEMY_BINDS = {"default": SQLALCHEMY_DATABASE_URI}
 
 
+@dataclass
 class ProductionConfig(Config):
     def __init__(self, **kwargs: Any) -> None:
         config = {
             **dotenv_values(
-                ".env.production",
+                "configuration/.env.production",
             ),  # load production environment variables
             **kwargs,  # load passed in variables
             **os.environ,  # override loaded values with environment variables
         }
-        super(Config, self).__init__(**config)
+        super().__init__(**config)
         self.__dict__.update(config)
 
     SQLALCHEMY_DATABASE_URI = env("SQLALCHEMY_DATABASE_URI", PROD_DATABASE_URI)
@@ -313,3 +319,9 @@ default_config_factory: Dict[
     "development": DevelopmentConfig,
     "test": TestConfig,
 }
+
+
+if __name__ == "__main__":
+    config_name = "development"
+    config = default_config_factory[config_name]()
+    pprint.pprint(config.__dict__)
