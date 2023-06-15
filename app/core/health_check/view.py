@@ -1,6 +1,6 @@
 from typing import Any
 
-from flask import g, jsonify
+from flask import g, jsonify, request
 
 
 def health_check(app: Any, **kwargs: Any) -> None:
@@ -12,7 +12,8 @@ def health_check(app: Any, **kwargs: Any) -> None:
                 "message": "healthy",
                 "organization": g.organization,
                 "site_title": app.config["SITE_TITLE"],
-                "site_url": app.config["SITE_URL"],
+                "expected_site_url": app.config["SITE_URL"],
+                "actual_site_url": request.environ.get("HTTP_HOST"),
                 **kwargs,
             }
         )
