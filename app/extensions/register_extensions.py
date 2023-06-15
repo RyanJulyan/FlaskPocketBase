@@ -1,6 +1,6 @@
 import os
 import importlib
-from typing import Any, List
+from typing import Any, List, Literal
 
 from app.extensions.get_enabled_extensions import get_enabled_extensions
 
@@ -18,11 +18,12 @@ def list_folders(directory: str) -> List[str]:
 def register_extensions(
     app: Any,
     extensions_directory: str = DEFAULT_EXTENSIONS_DIRECTORY,
+    get_enabled_extensions_method_name: Literal["json", "sql_alch"] = "json",
 ) -> None:
     @app.before_request
     def before_request() -> None:
-        enabled_extensions = (
-            get_enabled_extensions()
+        enabled_extensions = get_enabled_extensions(
+            method_name=get_enabled_extensions_method_name
         )  # Get the list of enabled extensions from your database or config file
 
         all_extensions = list_folders(extensions_directory)

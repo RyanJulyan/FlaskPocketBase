@@ -1,6 +1,6 @@
 import os
 import importlib
-from typing import Any, List
+from typing import Any, List, Literal
 
 from app.plugins.get_enabled_plugins import get_enabled_plugins
 
@@ -18,11 +18,12 @@ def list_folders(directory: str) -> List[str]:
 def register_plugins(
     app: Any,
     plugins_directory: str = DEFAULT_PLUGINS_DIRECTORY,
+    get_enabled_plugins_method_name: Literal["json", "sql_alch"] = "json",
 ) -> None:
     @app.before_request
     def before_request() -> None:
-        enabled_plugins = (
-            get_enabled_plugins()
+        enabled_plugins = get_enabled_plugins(
+            method_name=get_enabled_plugins_method_name
         )  # Get the list of enabled plugins from your database or config file
 
         all_plugins = list_folders(plugins_directory)
