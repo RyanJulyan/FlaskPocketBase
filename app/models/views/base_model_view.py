@@ -5,6 +5,8 @@ from werkzeug.wrappers import Response as BaseResponse
 from flask import redirect, request, url_for
 from flask_admin.contrib.sqla import ModelView
 
+from app.models.data.role import Role
+
 
 class BaseModelView(ModelView):
     # Default configurations
@@ -29,25 +31,21 @@ class BaseModelView(ModelView):
 
     def is_action_allowed(self, name: str) -> bool:
         # Check if user has role
-        if name not in ["create", "edit", "delete"]:
+        if name not in [
+            "create",
+            "edit",
+            "delete",
+        ] or not current_user.has_role(self.__class__.__name__):
             return super(BaseModelView, self).is_action_allowed(name)
 
-        has_class_as_role: bool = current_user.has_role(
-            self.__class__.__name__
-        )
-        has_action_as_permission: bool = current_user.has_permission(name)
+        class_as_role: Role = current_user.find_role(self.__class__.__name__)
 
-        current_user.can(name)
+        has_action_as_permission: bool = name in class_as_role.permissions
 
         valid_check = any(
             [
                 current_user.has_role("admin"),
-                all(
-                    [
-                        has_class_as_role,
-                        has_action_as_permission,
-                    ]
-                ),
+                has_action_as_permission,
             ]
         )
 
