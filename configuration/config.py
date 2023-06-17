@@ -31,7 +31,7 @@ class Config(object):
     def __init__(self, **kwargs: Any) -> None:
         config = {
             **dotenv_values(
-                ".env.shared",
+                "configuration/.env.shared",
             ),  # load shared environment variables
             **kwargs,  # load passed in variables
             **os.environ,  # override loaded values with environment variables
