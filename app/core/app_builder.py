@@ -3,7 +3,7 @@ from typing import Any, Dict
 
 from flask_cors import CORS
 from flask_wtf.csrf import CSRFProtect
-from app.core.flask_security.init_flask_security import init_flask_security
+from flask_restx import Api
 
 try:
     from flask_debugtoolbar import DebugToolbarExtension
@@ -12,11 +12,14 @@ except ImportError as e:
 
 from configuration.config import Config, default_config_factory
 
+from app.core.flask_security.init_flask_security import init_flask_security
 from app.core.app_factory import create_app
 from app.core.before_request.before_request import before_request
 from app.core.context_processor.context_processor import context_processor
 from app.core.health_check.view import health_check
 from app.core.errorhandler.errorhandler import errorhandler
+from app.core.api_factory import create_api
+from app.core.health_check.rest_api import health_check_api
 from app.core.database.database import db
 from app.core.flask_admin.init_flask_admin import init_flask_admin
 from app.extensions.register_extensions import (
@@ -39,10 +42,14 @@ def build_app(
     config_factory = {**default_config_factory, **config_factory}
     flask_env = os.environ.get("FLASK_ENV", "default")
 
+    config_object = config_factory[flask_env]()
+
     app = create_app(
-        config_object=config_factory[flask_env],
+        config_object=config_object,
         template_folder=template_folder,
     )
+
+    print(app.config["SITE_TITLE"])
 
     CORS(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
 
@@ -62,6 +69,9 @@ def build_app(
     health_check(app, **health_check_kwargs)
 
     errorhandler(app)
+
+    app.api = create_api(app=app)
+    health_check_api(app=app, api=app.api, **health_check_kwargs)
 
     app.admin = init_flask_admin(app)
 
