@@ -10,6 +10,7 @@ def errorhandler(app: Any) -> None:
     def handle_exception(e):
         """Return JSON instead of HTML for HTTP errors."""
         response = make_response()
+
         code = 500
         name = "Server Error"
         description = "Internal Server Error"

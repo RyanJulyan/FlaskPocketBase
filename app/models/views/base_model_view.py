@@ -13,6 +13,7 @@ class BaseModelView(ModelView):
     can_create = False
     can_edit = False
     can_delete = False
+    can_view_details = False
     column_display_pk = False  # display primary keys
     page_size = 500  # number of entries to display on list view
 
@@ -20,6 +21,7 @@ class BaseModelView(ModelView):
         # Only allow access to admins and managers
         return any(
             [
+                current_user.is_authenticated,
                 current_user.has_role("admin"),
                 current_user.has_role(self.__class__.__name__),
             ]
@@ -30,11 +32,16 @@ class BaseModelView(ModelView):
         return redirect(url_for("security.login", next=request.url))
 
     def is_action_allowed(self, name: str) -> bool:
+        print()
+        print("is_action_allowed: name")
+        print(name)
+        print()
         # Check if user has role
         if name not in [
             "create",
             "edit",
             "delete",
+            "view",
         ] or not current_user.has_role(self.__class__.__name__):
             return super(BaseModelView, self).is_action_allowed(name)
 
