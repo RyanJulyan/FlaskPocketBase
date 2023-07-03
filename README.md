@@ -53,3 +53,5 @@ python .\main.py
 # flask --debug run --port 5000
 
 ```
+
+# Adding Plugins
