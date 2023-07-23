@@ -1,6 +1,10 @@
 # FlaskPocketBase
 An attempt at implementing an equivalent Flask  pocketbase (https://pocketbase.io/) an Open Source backend for your next SaaS and Mobile app. Features: Realtime database, Authentication, File storage, Admin dashboard, Extensions, Plugins
 
+## Notes:
+This is part of the natural progression from the Flask-BDA project found here: [https://github.com/RyanJulyan/Flask-BDA](https://github.com/RyanJulyan/Flask-BDA) and should be considered it's successor or alternative approach.
+
+
 # Repos
 ## Replit
 [https://replit.com/@RyanJulyan/FlaskPocketBase](https://replit.com/@RyanJulyan/FlaskPocketBase)
@@ -45,7 +49,7 @@ venv\Scripts\activate
 pip install --upgrade pip
 pip install --no-cache-dir -r requirements.txt
 
-set FLASK_ENV=development
+set ENV=development
 set FLASK_APP=app
 set FLASK_DEBUG=1
 

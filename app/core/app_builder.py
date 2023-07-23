@@ -40,9 +40,9 @@ def build_app(
     health_check_kwargs: Any = {},
 ) -> Any:
     config_factory = {**default_config_factory, **config_factory}
-    flask_env = os.environ.get("FLASK_ENV", "default")
+    env_config_setting = os.environ.get("ENV", "default")
 
-    config_object = config_factory[flask_env]()
+    config_object = config_factory[env_config_setting]()
 
     app = create_app(
         config_object=config_object,
