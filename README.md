@@ -58,4 +58,6 @@ python .\main.py
 
 ```
 
+# Extensions vs Plugins
+
 # Adding Plugins
