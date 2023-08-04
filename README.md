@@ -59,5 +59,10 @@ python .\main.py
 ```
 
 # Extensions vs Plugins
+Our system is designed with extensibility and customization in mind. It comes with a set of standard extensions that provide a wide range of functionality out of the box. These extensions are integral parts of the system, ensuring a robust and comprehensive user experience.
+
+In addition to the standard extensions, our system also supports plugins developed by third parties. These plugins allow for additional functionality, enabling users to tailor the system to their specific needs. This open-ended architecture fosters innovation and flexibility, allowing developers to create and integrate their own features, thus enhancing the system's capabilities beyond its core functions.
+
+The combination of standard extensions and third-party plugins ensures that our system is not only powerful and versatile, but also adaptable to the evolving needs of our users.
 
 # Adding Plugins
