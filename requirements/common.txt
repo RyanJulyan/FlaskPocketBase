@@ -5,6 +5,8 @@ flask-cors
 flask_restx
 flask-security-too
 flask-sqlalchemy
+jsonschema
+openpyxl
 python-dotenv
 pytz
 sqlalchemy
