@@ -5,6 +5,8 @@ flask-cors
 flask_restx
 flask-security-too
 flask-sqlalchemy
+Flask-Compress
+gevent
 jsonschema
 openpyxl
 python-dotenv

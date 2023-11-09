@@ -30,6 +30,25 @@ python-versions = ">=3.7"
 frozenlist = ">=1.1.0"
 
 [[package]]
+name = "aniso8601"
+version = "9.0.1"
+description = "A library for parsing ISO 8601 strings."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+dev = ["black", "coverage", "isort", "pre-commit", "pyenchant", "pylint"]
+
+[[package]]
+name = "app"
+version = "0.0.1"
+description = "a simple egg"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "argon2-cffi"
 version = "21.3.0"
 description = "The secure Argon2 password hashing algorithm."
@@ -91,6 +110,25 @@ description = "Fast, simple object-to-object and broadcast signaling"
 category = "main"
 optional = false
 python-versions = ">=3.7"
+
+[[package]]
+name = "brotli"
+version = "1.1.0"
+description = "Python bindings for the Brotli compression library"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "brotlicffi"
+version = "1.1.0.0"
+description = "Python CFFI bindings to the Brotli library"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+cffi = ">=1.0.0"
 
 [[package]]
 name = "certifi"
@@ -187,6 +225,19 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "flask-compress"
+version = "1.14"
+description = "Compress responses in your Flask app with gzip, deflate or brotli."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+brotli = {version = "*", markers = "platform_python_implementation != \"PyPy\""}
+brotlicffi = {version = "*", markers = "platform_python_implementation == \"PyPy\""}
+flask = "*"
+
+[[package]]
 name = "flask-cors"
 version = "3.0.10"
 description = "A Flask extension adding a decorator for CORS support"
@@ -211,6 +262,27 @@ Blinker = "*"
 Flask = ">=0.8"
 itsdangerous = "*"
 werkzeug = "*"
+
+[[package]]
+name = "flask-restx"
+version = "1.2.0"
+description = "Fully featured framework for fast, easy and documented API development with Flask"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+aniso8601 = ">=0.82"
+Flask = ">=0.8,<2.0.0 || >2.0.0,<3.0.0"
+importlib-resources = "*"
+jsonschema = "<=4.17.3"
+pytz = "*"
+werkzeug = "<2.0.0 || >2.0.0,<3.0.0"
+
+[package.extras]
+dev = ["blinker", "Faker (==2.0.0)", "mock (==3.0.5)", "pytest (==7.0.1)", "pytest-benchmark (==3.4.1)", "pytest-cov (==4.0.0)", "pytest-flask (==1.2.0)", "pytest-mock (==3.6.1)", "pytest-profiling (==1.7.0)", "tzlocal", "invoke (==2.0.0)", "twine (==3.8.0)", "tox", "black"]
+doc = ["alabaster (==0.7.12)", "Sphinx (==5.3.0)", "sphinx-issues (==3.0.1)"]
+test = ["blinker", "Faker (==2.0.0)", "mock (==3.0.5)", "pytest (==7.0.1)", "pytest-benchmark (==3.4.1)", "pytest-cov (==4.0.0)", "pytest-flask (==1.2.0)", "pytest-mock (==3.6.1)", "pytest-profiling (==1.7.0)", "tzlocal", "invoke (==2.0.0)", "twine (==3.8.0)"]
 
 [[package]]
 name = "flask-sqlalchemy"
@@ -249,6 +321,27 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "gevent"
+version = "23.9.1"
+description = "Coroutine-based network library"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+cffi = {version = ">=1.12.2", markers = "platform_python_implementation == \"CPython\" and sys_platform == \"win32\""}
+greenlet = {version = ">=2.0.0", markers = "platform_python_implementation == \"CPython\" and python_version < \"3.11\""}
+"zope.event" = "*"
+"zope.interface" = "*"
+
+[package.extras]
+dnspython = ["dnspython (>=1.16.0,<2.0)", "idna"]
+monitor = ["psutil (>=5.7.0)"]
+recommended = ["cffi (>=1.12.2)", "dnspython (>=1.16.0,<2.0)", "idna", "psutil (>=5.7.0)"]
+docs = ["sphinx", "furo", "repoze.sphinx.autointerface", "sphinxcontrib-programoutput", "zope.schema"]
+test = ["cffi (>=1.12.2)", "dnspython (>=1.16.0,<2.0)", "idna", "psutil (>=5.7.0)", "requests", "coverage (>=5.0)", "objgraph", "setuptools"]
+
+[[package]]
 name = "greenlet"
 version = "2.0.2"
 description = "Lightweight in-process concurrent programming"
@@ -267,6 +360,18 @@ description = "Internationalized Domain Names in Applications (IDNA)"
 category = "main"
 optional = false
 python-versions = ">=3.5"
+
+[[package]]
+name = "importlib-resources"
+version = "6.1.1"
+description = "Read resources from Python packages"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+docs = ["sphinx (>=3.5)", "sphinx (<7.2.5)", "jaraco.packaging (>=9.3)", "rst.linker (>=1.9)", "furo", "sphinx-lint", "jaraco.tidelift (>=1.4)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ruff", "zipp (>=3.17)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
 
 [[package]]
 name = "iso8601"
@@ -313,6 +418,22 @@ MarkupSafe = ">=2.0"
 
 [package.extras]
 i18n = ["Babel (>=2.7)"]
+
+[[package]]
+name = "jsonschema"
+version = "4.17.3"
+description = "An implementation of JSON Schema validation for Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+attrs = ">=17.4.0"
+pyrsistent = ">=0.14.0,<0.17.0 || >0.17.0,<0.17.1 || >0.17.1,<0.17.2 || >0.17.2"
+
+[package.extras]
+format = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3987", "uri-template", "webcolors (>=1.11)"]
+format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3986-validator (>0.1.0)", "uri-template", "webcolors (>=1.11)"]
 
 [[package]]
 name = "markupsafe"
@@ -424,6 +545,14 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "pyrsistent"
+version = "0.20.0"
+description = "Persistent/Functional/Immutable data structures"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
 name = "pyseto"
 version = "1.7.0"
 description = "A Python implementation of PASETO/PASERK."
@@ -467,7 +596,7 @@ test = ["pylint", "pycodestyle", "pyflakes", "pytest", "pytest-cov", "coverage"]
 
 [[package]]
 name = "pytoolconfig"
-version = "1.2.5"
+version = "1.2.6"
 description = "Python tool configuration"
 category = "dev"
 optional = false
@@ -479,10 +608,18 @@ platformdirs = {version = ">=1.4.4", optional = true, markers = "extra == \"glob
 tomli = {version = ">=2.0.1", markers = "python_version < \"3.11\""}
 
 [package.extras]
+validation = ["pydantic (>=1.7.4)"]
+global = ["platformdirs (>=1.4.4)"]
 doc = ["tabulate (>=0.8.9)", "sphinx (>=4.5.0)"]
 gendocs = ["sphinx (>=4.5.0)", "sphinx-autodoc-typehints (>=1.18.1)", "sphinx-rtd-theme (>=1.0.0)", "pytoolconfig"]
-global = ["platformdirs (>=1.4.4)"]
-validation = ["pydantic (>=1.7.4)"]
+
+[[package]]
+name = "pytz"
+version = "2023.3.post1"
+description = "World timezone definitions, modern and historical"
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "replit"
@@ -733,19 +870,56 @@ python-versions = ">=3.7"
 idna = ">=2.0"
 multidict = ">=4.0"
 
+[[package]]
+name = "zope.event"
+version = "5.0"
+description = "Very basic event publishing system"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["sphinx"]
+test = ["zope.testrunner"]
+
+[[package]]
+name = "zope.interface"
+version = "6.1"
+description = "Interfaces for Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["sphinx", "repoze.sphinx.autointerface", "sphinx-rtd-theme"]
+test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
+testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
+
+[[package]]
+name = "zxcvbn"
+version = "4.4.28"
+description = ""
+category = "main"
+optional = false
+python-versions = "*"
+
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10.0,<3.11"
-content-hash = "bf8d471b37d29a3348ba48f77975db06989e8426b38821b1e6c481de848ce51e"
+content-hash = "8a5ab6b7d09018bc2fdbffbca96f99e5e87cdf46f05a4506b22a1d4363a56da3"
 
 [metadata.files]
 aiohttp = []
 aiosignal = []
+aniso8601 = []
+app = []
 argon2-cffi = []
 argon2-cffi-bindings = []
 async-timeout = []
 attrs = []
 blinker = []
+brotli = []
+brotlicffi = []
 certifi = []
 cffi = []
 charset-normalizer = []
@@ -754,17 +928,22 @@ colorama = []
 cryptography = []
 debugpy = []
 flask = []
+flask-compress = []
 flask-cors = []
 flask-debugtoolbar = []
+flask-restx = []
 flask-sqlalchemy = []
 flask-wtf = []
 frozenlist = []
+gevent = []
 greenlet = []
 idna = []
+importlib-resources = []
 iso8601 = []
 itsdangerous = []
 jedi = []
 jinja2 = []
+jsonschema = []
 markupsafe = []
 multidict = []
 packaging = []
@@ -776,10 +955,12 @@ protobuf = []
 pycparser = []
 pycryptodomex = []
 pyflakes = []
+pyrsistent = []
 pyseto = []
 python-dotenv = []
 python-lsp-jsonrpc = []
 pytoolconfig = []
+pytz = []
 replit = []
 replit-python-lsp-server = []
 requests = []
@@ -797,3 +978,6 @@ whatthepatch = []
 wtforms = []
 yapf = []
 yarl = []
+"zope.event" = []
+"zope.interface" = []
+zxcvbn = []
