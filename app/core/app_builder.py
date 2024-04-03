@@ -49,8 +49,6 @@ def build_app(
         template_folder=template_folder,
     )
 
-    print(app.config["SITE_TITLE"])
-
     CORS(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
 
     app.csrf_protect = CSRFProtect(app)
@@ -58,22 +56,22 @@ def build_app(
     if app.config["DEBUG"]:
         app.toolbar = DebugToolbarExtension(app)
 
-    app.db = db.init_app(app)
+    app.db = db.init_app(app=app)
 
-    app.security = init_flask_security(app=app)
+    app = init_flask_security(app=app)
 
-    before_request(app)
+    before_request(app=app)
 
-    context_processor(app)
+    context_processor(app=app)
 
-    health_check(app, **health_check_kwargs)
+    health_check(app=app, **health_check_kwargs)
 
-    errorhandler(app)
+    # errorhandler(app=app)
 
-    app.api = create_api(app=app)
+    app = create_api(app=app)
     health_check_api(app=app, api=app.api, **health_check_kwargs)
 
-    app.admin = init_flask_admin(app)
+    app = init_flask_admin(app)
 
     register_extensions(app=app, extensions_directory=extensions_directory)
 

@@ -12,7 +12,7 @@ def init_flask_security(
     **kwargs: Any,
 ) -> Security:
     # Setup Flask-Security
-    user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-    security = Security(app, user_datastore)
+    app.user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+    app.security = Security(app, app.user_datastore)
 
-    return security
+    return app

@@ -19,7 +19,7 @@ def create_api(
 
     authorizations = {**default_authorizations, **authorizations}
 
-    api = Api(
+    app.api = Api(
         app,
         version="1.0.0",
         title=app.config["SITE_TITLE"] + " API",
@@ -31,4 +31,4 @@ def create_api(
         authorizations=authorizations,
     )
 
-    return api
+    return app

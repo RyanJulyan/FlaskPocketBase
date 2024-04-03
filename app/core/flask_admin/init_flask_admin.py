@@ -10,11 +10,11 @@ def init_flask_admin(
     **kwargs: Any
 ) -> Admin:
     # Initialize Flask-Admin
-    admin = Admin(
+    app.admin = Admin(
         app,
         name=name,
         template_mode=template_mode,
         **kwargs,
     )
 
-    return admin
+    return app

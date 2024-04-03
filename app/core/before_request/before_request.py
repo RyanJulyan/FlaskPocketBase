@@ -1,41 +1,28 @@
 from typing import Any
 
 from flask import g, request
-from sqlalchemy_utils import database_exists, create_database
 
-from app.core.database.database import db
+from app.core.choose_tenant.choose_tenant import choose_tenant
+from app.core.create_database.create_database import create_database
+from app.core.create_tables_from_models.create_tables_from_models import (
+    create_tables_from_models,
+)
+from app.core.create_admin_user.create_admin_user import create_admin_user
+
+
+appHasRunBefore: bool = False
 
 
 def before_request(app: Any) -> None:
     @app.before_request
     def before_request() -> None:
-        # organization = tenant_name
-        # Just use the query parameter "?organization=tenant_name"
-        # or a subdomain tenant_name.example.com
-        g.organization = "default"
+        global appHasRunBefore
+        choose_tenant(app=app)
 
-        host = request.environ.get("HTTP_HOST").split(".")
+        create_database(app=app)
 
-        if "organization" in request.args:
-            g.organization = request.args["organization"]
-            app.logger.info("Organisation changed: " + g.organization)
-        elif len(host) == 3 and host[0] != "www":
-            g.organization = host[0]
-            app.logger.info("Organisation changed: " + g.organization)
+        create_tables_from_models(app=app)
 
-        # Set database to tenant_name
-        db.choose_tenant(g.organization)
-
-        # Create database if it does not exist.
-        if app.config["AUTO_CREATE_DATABASE"]:
-            if not database_exists(db.get_engine().url):
-                create_database(db.get_engine().url)
-            else:
-                # Connect the database if exists.
-                db.get_engine().connect()
-
-        # Build the database:
-        if app.config["AUTO_CREATE_TABLES_FROM_MODELS"]:
-            # This will create the database tables using SQLAlchemy
-            with app.app_context():
-                db.create_all()
+        if not appHasRunBefore:
+            create_admin_user(app=app)
+            appHasRunBefore = True

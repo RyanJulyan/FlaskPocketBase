@@ -98,10 +98,17 @@ class Config(object):
         "pool_recycle": env("POOL_RECYCLE", -1),
     }
 
-    ##############################################
+    ################################################
     # Run create_database() in @app.before_request #
-    ##############################################
+    ################################################
     AUTO_CREATE_DATABASE = env("AUTO_CREATE_DATABASE", True)
+
+    ###########################################################
+    # Run user_datastore.create_user() in @app.before_request #
+    ###########################################################
+    AUTO_CREATE_ADMIN_USER = env("AUTO_CREATE_ADMIN_USER", True)
+    ADMIN_EMAIL = env("ADMIN_EMAIL", "admin")
+    ADMIN_PASSWORD = env("ADMIN_PASSWORD", "admin")
 
     ##############################################
     # Run db.create_all() in @app.before_request #
