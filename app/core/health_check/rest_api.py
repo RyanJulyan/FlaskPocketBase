@@ -23,7 +23,7 @@ def health_check_api(app: Any, api: Any, **kwargs: Any) -> None:
         )
         def get(self):  # /health_check
             """List Health Check records"""
-            return {
+            data = {
                 "status": 200,
                 "message": "healthy",
                 "organization": g.organization,
@@ -31,4 +31,8 @@ def health_check_api(app: Any, api: Any, **kwargs: Any) -> None:
                 "expected_site_url": app.config["SITE_URL"],
                 "actual_site_url": request.environ.get("HTTP_HOST"),
                 **kwargs,
-            }, 200
+            }
+
+            return data, 200
+            # return data, 200, {"X-TEMPLATE": "healthcheck.html"}
+            # return app.api.render_response(data, template="healthcheck.html")

@@ -3,30 +3,26 @@ from typing import Any, Dict
 from flask import Flask
 from flask_restx import Api
 
-from configuration.config import Config
+from app.core.custom_api import CustomApi
 
 
 def create_api(
     app: Any, authorizations: Dict[str, Dict[str, str]] = {}
 ) -> Any:
-    default_authorizations = {
-        "jwt": {
-            "type": "bearer Token",
-            "in": "header",
-            "name": "JWTAuthorization",
-        },
-    }
+    default_authorizations = app.config["DEFAULT_AUTHORIZATIONS"]
 
+    # Merge default and provided authorizations
     authorizations = {**default_authorizations, **authorizations}
 
-    app.api = Api(
+    # Initialize API with dynamic config
+    app.api = CustomApi(
         app,
-        version="1.0.0",
+        version=app.config["API_VERSION"],
         title=app.config["SITE_TITLE"] + " API",
         description=app.config["SITE_DESCRIPTION"] + " API",
-        base_url="/api",  # this did not work when set so moved to docs
         doc=app.config["SWAGGER_URL"],
-        security=["jwt", "mandate"],
+        # security=app.config["API_SECURITY"],
+        security=["jwt", "apikey", "token", "Bearer Auth"],
         decorators=[app.csrf_protect.exempt],
         authorizations=authorizations,
     )

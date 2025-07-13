@@ -1,32 +1,78 @@
 [tool.poetry]
 name = "FlaskPocketBase"
-version = "0.1.0"
+version = "0.0.1"
 description = "Try to implement the features of PocketBase using flask"
 authors = ["Ryan Julyan <ryan@julyan.biz>"]
+license = "MIT"
+readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
-python = ">=3.10.0,<3.11"
-replit = "^3.2.4"
-Flask = "^2.2.0"
-Flask-SQLAlchemy = "^3.0.3"
-urllib3 = "^1.26.12"
-Flask-Cors = "^3.0.10"
-Flask-DebugToolbar = "^0.13.1"
-Flask-WTF = "^1.1.1"
-python-dotenv = "^1.0.0"
-SQLAlchemy-Utils = "^0.41.1"
-flask-restx = "^1.2.0"
-Flask-Compress = "^1.14"
-gevent = "^23.9.1"
-zxcvbn = "^4.4.28"
+python = ">=3.11,<4.0"
+poetry = ">=2.1.3"
+Flask = ">=2.3.3"
+Flask-SQLAlchemy = ">=3.1.1"
+urllib3 = ">=1.26.20"
+Flask-Cors = ">=3.0.10"
+Flask-DebugToolbar = ">=0.13.1"
+Flask-WTF = ">=1.2.2"
+python-dotenv = ">=1.1.1"
+SQLAlchemy-Utils = ">=0.41.2"
+flask-restx = ">=1.3.0"
+Flask-Compress = ">=1.18"
+gevent = ">=23.9.1"
+zxcvbn = ">=4.5.0"
+gunicorn = ">=23.0.0"
+dicttoxml = ">=1.7.16"
+pandas = ">=2.3.1"
+poetry-plugin-up = ">=0.9.0"
 
-[tool.poetry.dev-dependencies]
-debugpy = "^1.6.2"
-replit-python-lsp-server = {extras = ["yapf", "rope", "pyflakes"], version = "^1.5.9"}
+[tool.poetry.group.dev.dependencies]
+black = ">=24.10.0"
+bandit = {extras = ["toml"], version = ">=1.8.6"}
+build = ">=1.2.2.post1"
+bumpver = ">=2023.1129"
+flake8 = ">=7.3.0"
+flake8-html = ">=0.4.3"
+isort = ">=5.13.2"
+lxml = ">=5.4.0"
+mypy = ">=1.16.1"
+pip-tools = ">=7.4.1"
+ruff = ">=0.1.14"
+safety = ">=3.6.0"
+pytest = ">=8.4.1"
+coverage = ">=7.9.2"
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.pyright]
+# https://github.com/microsoft/pyright/blob/main/docs/configuration.md
+useLibraryCodeForTypes = true
+exclude = [".cache"]
+
+[tool.ruff]
+# https://beta.ruff.rs/docs/configuration/
+select = ['E', 'W', 'F', 'I', 'B', 'C4', 'ARG', 'SIM']
+ignore = ['W291', 'W292', 'W293']
 
 [tool.black]
 line-length = 79
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.bumpver]
+current_version = "2.0.0"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message = "Bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    'version = "{version}"', 
+    'current_version = "{MAJOR}.{MINOR}.{PATCH}"'
+]
+"README.md" = [
+    'current_version = "{version}"'
+]
