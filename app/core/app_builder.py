@@ -10,6 +10,8 @@ try:
 except ImportError as e:
     print(e)
 
+from plugo.services.plugin_manager import load_plugins as load_with_plugo
+
 from configuration.config import Config, default_config_factory
 
 from app.core.flask_security.init_flask_security import init_flask_security
@@ -22,20 +24,14 @@ from app.core.api_factory import create_api
 from app.core.health_check.rest_api import health_check_api
 from app.core.database.database import db
 from app.core.flask_admin.init_flask_admin import init_flask_admin
-from app.extensions.register_extensions import (
-    DEFAULT_EXTENSIONS_DIRECTORY,
-    register_extensions,
-)
-from app.plugins.register_plugins import (
-    DEFAULT_PLUGINS_DIRECTORY,
-    register_plugins,
-)
 
 
 def build_app(
     config_factory: Dict[str, Config] = {},
-    extensions_directory: str = DEFAULT_EXTENSIONS_DIRECTORY,
-    plugins_directory: str = DEFAULT_PLUGINS_DIRECTORY,
+    extensions_directory: str = "app/extensions",
+    extensions_config_path: str = "configuration/extensions_config.json",
+    plugins_directory: str = "app/plugins",
+    plugins_config_path: str = "configuration/plugins_config.json",
     template_folder: str = "templates",
     health_check_kwargs: Any = {},
 ) -> Any:
@@ -73,8 +69,16 @@ def build_app(
 
     app = init_flask_admin(app)
 
-    register_extensions(app=app, extensions_directory=extensions_directory)
+    loaded_extensions = load_with_plugo(
+        plugin_directory=extensions_directory,
+        config_path=extensions_config_path,
+        app=app,
+    )
 
-    register_plugins(app=app, plugins_directory=plugins_directory)
+    loaded_plugins = load_with_plugo(
+        plugin_directory=plugins_directory,
+        config_path=plugins_config_path,
+        app=app,
+    )
 
     return app

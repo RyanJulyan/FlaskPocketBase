@@ -1,0 +1,12 @@
+{
+    "plugins": [
+        {
+            "name": "auth",
+            "enabled": true
+        },
+        {
+            "name": "storage",
+            "enabled": true
+        }
+    ]
+}
