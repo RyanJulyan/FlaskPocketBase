@@ -116,3 +116,7 @@ author = 20129538
 
 [[workflows.workflow.tasks]]
 task = "packager.installForAll"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
