@@ -6,7 +6,8 @@ from configuration.config import Config
 
 
 def create_app(
-    config_object: Config, template_folder: str = "templates"
+    config_object: Config,
+    template_folder: str = "templates",
 ) -> Any:
     app = Flask(__name__, template_folder=template_folder)
     app.config.from_object(config_object)

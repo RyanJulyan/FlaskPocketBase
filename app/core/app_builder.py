@@ -1,28 +1,30 @@
 import os
 from typing import Any, Dict
 
-from flask_cors import CORS
 from flask_wtf.csrf import CSRFProtect
-from flask_restx import Api
+from flask_mail import Mail
+from plugo.services.plugin_manager import load_plugins as load_with_plugo
+
 
 try:
     from flask_debugtoolbar import DebugToolbarExtension
 except ImportError as e:
     print(e)
 
-from plugo.services.plugin_manager import load_plugins as load_with_plugo
-
 from configuration.config import Config, default_config_factory
 
-from app.core.flask_security.init_flask_security import init_flask_security
 from app.core.app_factory import create_app
+from app.core.database.database import db
+from app.core.flask_security.init_flask_security import init_flask_security
+from app.core.cors.flask_cors import init_flask_cors
+from app.core.limiter.flask_limiter import init_flask_limiter
+from app.core.talisman.flask_talisman import init_flask_talisman
 from app.core.before_request.before_request import before_request
 from app.core.context_processor.context_processor import context_processor
 from app.core.health_check.view import health_check
 from app.core.errorhandler.errorhandler import errorhandler
 from app.core.api_factory import create_api
 from app.core.health_check.rest_api import health_check_api
-from app.core.database.database import db
 from app.core.flask_admin.init_flask_admin import init_flask_admin
 
 
@@ -34,6 +36,7 @@ def build_app(
     plugins_config_path: str = "configuration/plugins_config.json",
     template_folder: str = "templates",
     health_check_kwargs: Any = {},
+    authorizations: Dict[str, Dict[str, str]] = {},
 ) -> Any:
     config_factory = {**default_config_factory, **config_factory}
     env_config_setting = os.environ.get("ENV", "default")
@@ -45,16 +48,23 @@ def build_app(
         template_folder=template_folder,
     )
 
-    CORS(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
+    app.db = db
+    app.db.init_app(app=app)
+
+    app = init_flask_security(app=app)
 
     app.csrf_protect = CSRFProtect(app)
 
+    app = init_flask_cors(app=app)
+
+    app = init_flask_limiter(app)
+
+    app = init_flask_talisman(app)
+
+    app.mail = Mail(app)
+
     if app.config["DEBUG"]:
         app.toolbar = DebugToolbarExtension(app)
-
-    app.db = db.init_app(app=app)
-
-    app = init_flask_security(app=app)
 
     before_request(app=app)
 
@@ -64,8 +74,8 @@ def build_app(
 
     # errorhandler(app=app)
 
-    app = create_api(app=app)
-    health_check_api(app=app, api=app.api, **health_check_kwargs)
+    app = create_api(app=app, authorizations=authorizations)
+    health_check_api(app=app, **health_check_kwargs)
 
     app = init_flask_admin(app)
 
