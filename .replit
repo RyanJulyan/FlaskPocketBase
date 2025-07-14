@@ -5,24 +5,26 @@ entrypoint = "main.py"
 # A list of globs that specify which files and directories should
 # be hidden in the workspace.
 hidden = ["venv", ".config", "**/__pycache__", "**/.mypy_cache", "**/*.pyc"]
+modules = ["python-3.10"]
 
 # Specifies which nix channel to use when building the environment.
 [nix]
 channel = "stable-22_11"
+packages = ["glibcLocales", "libev", "xcodebuild", "zlib"]
 
 # The command to start the interpreter.
 [interpreter]
-  [interpreter.command]
-  args = [
-    "stderred",
-    "--",
-    "prybar-python310",
-    "-q",
-    "--ps1",
-    "\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ",
-    "-i",
-  ]
-  env = { LD_LIBRARY_PATH = "$PYTHON_LD_LIBRARY_PATH" }
+[interpreter.command]
+args = [
+  "stderred",
+  "--",
+  "prybar-python310",
+  "-q",
+  "--ps1",
+  "\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ",
+  "-i",
+]
+env = { LD_LIBRARY_PATH = "$PYTHON_LD_LIBRARY_PATH" }
 
 [env]
 VIRTUAL_ENV = "${REPL_HOME}/venv"
@@ -40,53 +42,53 @@ language = "python3"
 [debugger]
 support = true
 
-  # How to start the debugger.
-  [debugger.interactive]
-  transport = "localhost:0"
-  startCommand = ["dap-python", "main.py"]
+# How to start the debugger.
+[debugger.interactive]
+transport = "localhost:0"
+startCommand = ["dap-python", "main.py"]
 
-    # How to communicate with the debugger.
-    [debugger.interactive.integratedAdapter]
-    dapTcpAddress = "localhost:0"
+# How to communicate with the debugger.
+[debugger.interactive.integratedAdapter]
+dapTcpAddress = "localhost:0"
 
-    # How to tell the debugger to start a debugging session.
-    [debugger.interactive.initializeMessage]
-    command = "initialize"
-    type = "request"
+# How to tell the debugger to start a debugging session.
+[debugger.interactive.initializeMessage]
+command = "initialize"
+type = "request"
 
-      [debugger.interactive.initializeMessage.arguments]
-      adapterID = "debugpy"
-      clientID = "replit"
-      clientName = "replit.com"
-      columnsStartAt1 = true
-      linesStartAt1 = true
-      locale = "en-us"
-      pathFormat = "path"
-      supportsInvalidatedEvent = true
-      supportsProgressReporting = true
-      supportsRunInTerminalRequest = true
-      supportsVariablePaging = true
-      supportsVariableType = true
+[debugger.interactive.initializeMessage.arguments]
+adapterID = "debugpy"
+clientID = "replit"
+clientName = "replit.com"
+columnsStartAt1 = true
+linesStartAt1 = true
+locale = "en-us"
+pathFormat = "path"
+supportsInvalidatedEvent = true
+supportsProgressReporting = true
+supportsRunInTerminalRequest = true
+supportsVariablePaging = true
+supportsVariableType = true
 
-    # How to tell the debugger to start the debuggee application.
-    [debugger.interactive.launchMessage]
-    command = "attach"
-    type = "request"
+# How to tell the debugger to start the debuggee application.
+[debugger.interactive.launchMessage]
+command = "attach"
+type = "request"
 
-      [debugger.interactive.launchMessage.arguments]
-      logging = {}
+[debugger.interactive.launchMessage.arguments]
+logging = {}
 
 # Configures the packager.
 [packager]
 language = "python3"
 ignoredPackages = ["unit_tests"]
 
-  [packager.features]
-  enabledForHosting = false
-  # Enable searching packages from the sidebar.
-  packageSearch = true
-  # Enable guessing what packages are needed from the code.
-  guessImports = true
+[packager.features]
+enabledForHosting = false
+# Enable searching packages from the sidebar.
+packageSearch = true
+# Enable guessing what packages are needed from the code.
+guessImports = true
 
 # These are the files that need to be preserved when this 
 # language template is used as the base language template
@@ -104,3 +106,13 @@ start = "pylsp"
 
 [deployment]
 run = ["sh", "-c", "python3 main.py"]
+
+[workflows]
+
+[[workflows.workflow]]
+name = "Install All"
+mode = "sequential"
+author = 20129538
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
