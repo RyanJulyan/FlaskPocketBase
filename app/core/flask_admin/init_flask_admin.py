@@ -6,14 +6,12 @@ from flask_admin import Admin
 def init_flask_admin(
     app: Any,
     name: str = "FLaskPocketBase",
-    template_mode: str = "bootstrap4",
-    **kwargs: Any
+    **kwargs: Any,
 ) -> Admin:
     # Initialize Flask-Admin
     app.admin = Admin(
         app,
         name=name,
-        template_mode=template_mode,
         **kwargs,
     )
 

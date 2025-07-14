@@ -3,7 +3,13 @@ import io
 
 from dicttoxml import dicttoxml  # For XML formatting
 from flask_restx import Api
-from flask import request, make_response, jsonify, render_template
+from flask import (
+    request,
+    make_response,
+    jsonify,
+    render_template,
+    current_app as ca,
+)
 from pandas import DataFrame
 
 from app.services.util.make_serializable import make_serializable
@@ -106,7 +112,13 @@ class CustomApi(Api):
 
         elif format_type == "csv":
             output = io.StringIO()
-            writer = csv.writer(output)
+            writer = csv.writer(
+                output,
+                delimiter=(
+                    request.args.get("delimiter")
+                    or ca.config.get("CSV_DELIMITER", "|")
+                ),
+            )
 
             # Handle list of dicts
             if isinstance(serializable_data, list) and all(

@@ -49,6 +49,7 @@ class Config(object):
         # List Formatting #
         ###################
         self.LIST_SEPARATOR = env("LIST_SEPARATOR", ",")
+        self.CSV_DELIMITER = env("CSV_DELIMITER", "|")
 
         ########################
         # Date Time Formatting #
@@ -175,7 +176,7 @@ class Config(object):
             "connect-src": env("CSP_CONNECT_SRC", "'self'"),
             "media-src": env("CSP_MEDIA_SRC", "'self' blob:"),
             "script-src": env("CSP_SCRIPT_SRC", "'self'"),
-            "style-src": env("CSP_STYLE_SRC", "'self'"),
+            "style-src": env("CSP_STYLE_SRC", "'self' 'unsafe-inline'"),
             "font-src": env("CSP_FONT_SRC", "'self'"),
             "frame-src": env("CSP_FRAME_SRC", "'self'"),
             "child-src": env("CSP_CHILD_SRC", "'self'"),
@@ -334,6 +335,10 @@ class DevelopmentConfig(Config):
     def __init__(self, **kwargs: Any) -> None:
 
         self.DEBUG = env("DEBUG", True)
+        self.DEBUG_TB_PROFILER_ENABLED = env("DEBUG_TB_PROFILER_ENABLED", True)
+        self.DEBUG_TB_INTERCEPT_REDIRECTS = env(
+            "DEBUG_TB_INTERCEPT_REDIRECTS", True
+        )
         self.SQLALCHEMY_DATABASE_URI = env(
             "SQLALCHEMY_DATABASE_URI", DEV_DATABASE_URI
         )
