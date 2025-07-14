@@ -161,6 +161,54 @@ class Config(object):
             "SECURITY_PASSWORD_COMPLEXITY_CHECKER", "zxcvbn"
         )
 
+        ##################
+        # flask_talisman #
+        ##################
+        """
+        handles setting HTTP headers that can help protect against a few common web application security issues.
+        blocks unauth images, scripts, styles, fonts, iframes, etc.
+        allows traffic from our domain by default
+        """
+        self.CONTENT_SECURITY_POLICY = {
+            "default-src": env("CSP_DEFAULT_SRC", "'self'"),
+            "img-src": env("CSP_IMG_SRC", "* data:"),
+            "connect-src": env("CSP_CONNECT_SRC", "'self'"),
+            "media-src": env("CSP_MEDIA_SRC", "'self' blob:"),
+            "script-src": env("CSP_SCRIPT_SRC", "'self'"),
+            "style-src": env("CSP_STYLE_SRC", "'self'"),
+            "font-src": env("CSP_FONT_SRC", "'self'"),
+            "frame-src": env("CSP_FRAME_SRC", "'self'"),
+            "child-src": env("CSP_CHILD_SRC", "'self'"),
+            "media-src": env("CSP_MEDIA_SRC", "'self'"),
+        }
+        self.CONTENT_SECURITY_POLICY_REPORT_URI = env(
+            "CONTENT_SECURITY_POLICY_REPORT_URI", None
+        )
+        self.SESSION_COOKIE_SECURE = parse_yes_no_true(
+            env("SESSION_COOKIE_SECURE", "True")
+        )
+        self.SESSION_COOKIE_HTTPONLY = parse_yes_no_true(
+            env("SESSION_COOKIE_HTTPONLY", "True")
+        )
+        self.SESSION_COOKIE_SAMESITE = env("SESSION_COOKIE_SAMESITE", "Lax")
+        self.X_XSS_PROTECTION = parse_yes_no_true(
+            env("X_XSS_PROTECTION", "True")
+        )
+        self.X_CONTENT_TYPE_OPTIONS = parse_yes_no_true(
+            env("X_CONTENT_TYPE_OPTIONS", "True")
+        )
+        self.FRAME_OPTIONS = env("FRAME_OPTIONS", "DENY")
+        self.FORCE_HTTPS = parse_yes_no_true(env("FORCE_HTTPS", "True"))
+        self.STRICT_TRANSPORT_SECURITY = parse_yes_no_true(
+            env("STRICT_TRANSPORT_SECURITY", "True")
+        )
+        self.STRICT_TRANSPORT_SECURITY_MAX_AGE = int(
+            env("STRICT_TRANSPORT_SECURITY_MAX_AGE", 31536000)
+        )
+        self.STRICT_TRANSPORT_SECURITY_INCLUDE_SUBDOMAINS = parse_yes_no_true(
+            env("STRICT_TRANSPORT_SECURITY_INCLUDE_SUBDOMAINS", "True")
+        )
+
         ################################################
         # Secret key for signing JWT (JSON Web Tokens) #
         ################################################
