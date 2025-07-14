@@ -7,7 +7,8 @@ from app.core.custom_api import CustomApi
 
 
 def create_api(
-    app: Any, authorizations: Dict[str, Dict[str, str]] = {}
+    app: Any,
+    authorizations: Dict[str, Dict[str, str]] = {},
 ) -> Any:
     default_authorizations = app.config["DEFAULT_AUTHORIZATIONS"]
 

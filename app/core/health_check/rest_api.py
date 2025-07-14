@@ -1,17 +1,33 @@
+import os
 from typing import Any
 
 from flask import g, request
 from flask_restx import Resource
+from jinja2 import ChoiceLoader, FileSystemLoader
 
 
-def health_check_api(app: Any, api: Any, **kwargs: Any) -> None:
+def health_check_api(app: Any, **kwargs: Any) -> None:
+    # Namespace-specific template folder
+    current_dir = os.path.dirname(__file__)
+    namespace_template_folder = os.path.join(current_dir, "templates")
+
+    # Extend the Jinja2 loader to include the namespace templates
+    app.jinja_loader = ChoiceLoader(
+        [
+            app.jinja_loader,  # Default loader
+            FileSystemLoader(
+                namespace_template_folder
+            ),  # Namespace-specific folder
+        ]
+    )
+
     # Swagger namespace
-    ns = api.namespace(
+    ns = app.api.namespace(
         "api/health_check",
         description="A health check API",
     )
 
-    @ns.route("/")
+    @ns.route("")
     class HealthCheckListResource(Resource):
         @ns.doc(
             responses={
