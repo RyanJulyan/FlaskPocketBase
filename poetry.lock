@@ -1158,6 +1158,39 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "flask-admin"
+version = "2.0.0a4"
+description = "Simple and extensible admin interface framework for Flask"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "flask_admin-2.0.0a4-py3-none-any.whl", hash = "sha256:dbe430eec1ad8918d130d522265910db7e9f49a5d4c12438175e0f61eb02c2a3"},
+    {file = "flask_admin-2.0.0a4.tar.gz", hash = "sha256:141cf19de079d26db6d2d674b9a470449d6561a2ba1252eff61e597d981b72c7"},
+]
+
+[package.dependencies]
+flask = ">=2.0"
+jinja2 = ">=3.0"
+markupsafe = ">=2.0"
+werkzeug = ">=2.0"
+wtforms = ">=2.3"
+
+[package.extras]
+all = ["Flask-Admin[azure-blob-storage]", "Flask-Admin[export]", "Flask-Admin[geoalchemy]", "Flask-Admin[images]", "Flask-Admin[peewee]", "Flask-Admin[pymongo]", "Flask-Admin[rediscli]", "Flask-Admin[s3]", "Flask-Admin[sqlalchemy-with-utils]", "Flask-Admin[sqlalchemy]", "Flask-Admin[translation]"]
+azure-blob-storage = ["azure-storage-blob (>=12.0.0)"]
+export = ["tablib (>=3.0.0)"]
+geoalchemy = ["Flask-Admin[sqlalchemy]", "geoalchemy2 (>=0.14.0)", "shapely (>=2)"]
+images = ["pillow (>=10.0.0)"]
+peewee = ["peewee (>=3.14.0)", "wtf-peewee (>=3.0.4)"]
+pymongo = ["pymongo (>=3.7.0)"]
+rediscli = ["redis (>=4.0.0)"]
+s3 = ["boto3 (>=1.33)"]
+sqlalchemy = ["flask-sqlalchemy (>=3)", "sqlalchemy (>=1.4)"]
+sqlalchemy-with-utils = ["Flask-Admin[sqlalchemy]", "arrow (>=0.13.0)", "colour (>=0.1.5)", "email_validator (>=2)", "sqlalchemy-citext (>=1.8.0)", "sqlalchemy_utils (>=0.38.0)"]
+translation = ["flask-babel (>=3.0.1)"]
+
+[[package]]
 name = "flask-compress"
 version = "1.18"
 description = "Compress responses in your Flask app with gzip, deflate, brotli or zstandard."
@@ -4730,4 +4763,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "b612a75bda09d7c7baca1cf318ec4026140dbd301f3c18805f66bc803761931b"
+content-hash = "45e95e76d5939b55e89867e129a393d3af5b2a66e5ed2686616a8c39dbb2c60d"

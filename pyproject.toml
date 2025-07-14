@@ -11,6 +11,7 @@ package-mode = false
 python = ">=3.11,<4.0"
 dicttoxml = ">=1.7.16"
 Flask = ">=2.3.3"
+flask-admin = ">=2.0.0a4"
 Flask-Compress = ">=1.18"
 Flask-Cors = ">=3.0.10"
 Flask-DebugToolbar = ">=0.13.1"
